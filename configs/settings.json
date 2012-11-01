@@ -1,0 +1,30 @@
+const EXPORTED_SYMBOLS = ["SETTINGS"];
+
+const SETTINGS = {
+    "name" : "share ca",
+    "src" : "chrome://share-ca-accessible/content/img/32x32.png",
+
+    "path" : {
+        "libs" : "chrome://share-ca/content/libs",
+        "modules" : "chrome://share-ca/content/modules"
+    },
+
+    "Libs" : [
+        "Log4Moz.jsm"
+    ],
+
+    "Modules" : [
+        ["button.js", "shareCaButton"],
+        ["pref.js", "shareCaPrefs"]
+    ],
+
+    "socials" : {
+        "FB" : {
+            "APP_ID" : 217915624978708,
+            "APP_SECRET" : "cb0298b24368df983612d0b6b1a82cd8",
+            //"APP_CHANNEL" : "http://share-ca.com",
+            "APP_CHANNEL" : "http://young-leaf-5178.herokuapp.com",
+            "module" : "chrome://share-ca/content/modules/socials/fb.js" 
+        },
+    }
+}
