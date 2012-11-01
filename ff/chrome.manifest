@@ -1,0 +1,11 @@
+content     share-ca     chrome/content/
+content     share-ca-accessible     chrome/content/accessible/ contentaccessible=yes
+skin        share-ca     classic/1.0     chrome/skin/
+
+overlay     chrome://browser/content/browser.xul        chrome://share-ca/content/overlay/browser.xul
+
+locale      shareca     ru              chrome/locale/ru/
+
+component   {b44362bb-09cd-48fe-a4a6-1e507094f522}  components/core.js
+contract    @share-ca.com/core;1    {b44362bb-09cd-48fe-a4a6-1e507094f522}
+category    profile-after-change    ShareCaService @share-ca.com/core;1

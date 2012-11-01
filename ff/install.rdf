@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<RDF xmlns="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+     xmlns:em="http://www.mozilla.org/2004/em-rdf#">
+
+  <Description about="urn:mozilla:install-manifest">
+
+    <em:id>app@share-ca.com</em:id>
+    <em:name>Share ca</em:name>
+    <em:type>2</em:type>
+    <em:unpack>true</em:unpack>
+    <em:version>1.0</em:version>
+    <em:description>You could simple share on facebook</em:description>
+    <em:creator>Guro Bokum</em:creator>
+    <em:contributor>Guro Bokum</em:contributor>
+    <em:iconURL>chrome://share-ca/skin/img/32x32.png</em:iconURL>
+    <em:icon64URL>chrome://share-ca/skin/img/64x64.png</em:icon64URL>
+    
+    <em:targetApplication>
+      <Description>
+        <em:id>{ec8030f7-c20a-464f-9b0e-13a3a9e97384}</em:id>
+        <em:minVersion>4.0</em:minVersion>
+        <em:maxVersion>999.*</em:maxVersion>
+      </Description>
+    </em:targetApplication>
+
+  </Description>
+
+</RDF>

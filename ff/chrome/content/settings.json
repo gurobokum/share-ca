@@ -1,0 +1,31 @@
+const EXPORTED_SYMBOLS = ["SETTINGS"];
+
+const SETTINGS = {
+    "name" : "share ca",
+    "src" : "chrome://share-ca-accessible/content/img/32x32.png",
+
+    "path" : {
+        "libs" : "chrome://share-ca/content/libs",
+        "modules" : "chrome://share-ca/content/modules"
+    },
+
+    "Libs" : [
+        "Log4Moz.jsm"
+    ],
+
+    "Modules" : [
+        ["button.js", "shareCaButton"],
+        ["pref.js", "shareCaPrefs"]
+    ],
+
+    "socials" : {
+        "FB" : {
+            "APP_ID" : 170903136368591, //dev
+            "APP_SECRET" : "76aee6b866acdd2323447240ce657882", //dev
+            //"APP_ID" : 217915624978708,
+            //"APP_SECRET" : "cb0298b24368df983612d0b6b1a82cd8",
+            "APP_CHANNEL" : "http://127.0.0.1:8080/auth-fb", //dev
+            "module" : "chrome://share-ca/content/modules/socials/fb.js" 
+        },
+    }
+}

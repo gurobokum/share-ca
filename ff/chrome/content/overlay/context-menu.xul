@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<!DOCTYPE overlay [
+    <!ENTITY % appDTD SYSTEM "chrome://shareit/locale/app.dtd">
+    %appDTD;
+]>
+
+<overlay id="shareItContextMenuOverlay"
+         xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+<menupopup id="contentAreaContextMenu">
+    <menuitem id="shareItContextMenuItem"
+              label="&app.share.text;"/>
+</menupopup>
+
+</overlay>
