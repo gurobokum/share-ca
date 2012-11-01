@@ -1,0 +1,33 @@
+#head h1 { font-size:39px;font-weight:bold;color:#fff;line-height:45.5px;width: 520px;margin:11px 0px 0px 69px;text-shadow:#000 0px -1px 3px; }
+.logo_firefox { margin-left:-394px;width:394px;height:491px;background-image:url("../images/logo_firefox.png"); }
+#head .download_button { display:block;outline:none;width:335px;height:92px;line-height:92px;padding: 24px 87px 13px 20px;background:url("../images/download_button.png") no-repeat;); cursor:pointer;color:white;font-size:36px;font-weight:bold;text-align:center;margin:-8px 0px 0px 46px; }
+
+#colonnetitulus .lang { font-size:14px;display:inline;font-weight:bold;color:#fff;text-decoration:none;font-style:italic;margin:0px 10px;outline:none;line-height:54px; }
+#colonnetitulus .lang:hover { text-decoration:underline; }
+
+#content h2 { font-size:31px;line-height:100px;color:#1f7bcc;}
+#content ul { list-style:none; }
+#content li { font-family: Arial, sans-serif;color:#44474a;line-height:84px;background-repeat: no-repeat;padding:0px 65px 0px 65px;background-position: left center; }
+
+#content li.single_click { background-image: url("../images/icons/single_click.png"); } 
+#content li.left_click { background-image: url("../images/icons/left_click.png"); } 
+#content li.right_click { background-image: url("../images/icons/right_click.png"); } 
+#content li.share_friends { background-image: url("../images/icons/share_friends.png"); } 
+#content li.tits { background-image: url("../images/icons/tits.png"); } 
+#content li.cats { background-image: url("../images/icons/cats.png"); } 
+
+#footer { font-family:Arial, sans-serif;font-style:italic;font-size:14px; }
+#footer .content { margin:0px auto;width:840px;padding:15px 80px 0px; }
+#footer .feedback { color:#ae0808;cursor:pointer;margin:0px 34px 0px 65px; }
+#footer .copyright { color:#948f8f; display:inline; }
+
+.form_feedback { box-shadow:1px 1px 3px #000;background:url("../images/bg_head.jpg") center;position:absolute;display:none;padding:7px;width:300px;border-radius:2px;z-index:999; }
+.form_feedback * { font-size:14px;font-family:Arial, sans-serif; }
+.form_feedback .invalid { color: rgba(174, 8, 8, .8); }
+.form_feedback textarea { width:300px;max-width:300px;height:100px;max-height:100px;display:block;margin:7px 0px; }
+.form_feedback input[type="text"],
+.form_feedback textarea {
+    width: 100%;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+}

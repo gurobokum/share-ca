@@ -1,0 +1,13 @@
+{
+    "name" : "share-ca",
+    "version" : "0.0.2",
+    "engines" : {
+        "node" : "0.8.10",
+        "npm" : "1.x.x"
+    },
+    "dependencies" : {
+        "express" : "3.x.x",
+        "jade" : "*",
+        "mongodb" : "1.x.x"
+    }
+}

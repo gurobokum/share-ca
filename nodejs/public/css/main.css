@@ -1,0 +1,19 @@
+@import "view.css";
+
+* { margin: 0;padding: 0; }
+
+html,body { height: 100%;}
+body {font-family: Helvetica, sans-serif;font-size:16px;background: #f8f8f8 url("../images/bg.png");width:100%;}
+
+#main { min-height: 100%;position:relative;min-width:1000px; }
+
+#head { background: #1a72c4 url("../images/bg_head.jpg") repeat-x center 54px;height: 438px;}
+#content { margin:0px auto;width:840px;padding:0px 80px 49px; } 
+
+#colonnetitulus { background: #242424;height:54px;padding-left:65px; }
+
+#logo { background: url("../images/logo.png");margin:37px 0px 0px 69px;display:block;text-indent:-9999px;width:344px;height:98px; }
+#logo_browser { position:absolute;left:100%;top:0; }
+
+#footer { border-top:1px solid rgba(0, 0, 0, 0.12);height:48px;margin-top:-49px;position:relative;z-index:1; }
+

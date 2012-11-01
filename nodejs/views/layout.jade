@@ -1,0 +1,29 @@
+doctype 5
+html
+    head
+        title #{$title} #{$browser}
+        link(rel="shortcut icon", href="images/favicon.ico", type="image/x-icon") 
+        link(rel="stylesheet", href="css/main.css")
+        script(src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js", type="text/javascript")
+        script(src="scripts/init.js", type="text/javascript")
+    body
+        div#main
+            div#head
+                div#colonnetitulus
+                    a(href="?lang=en").lang English
+                    a(href="?lang=fr").lang Fran&ccedil;ais
+                    a(href="?lang=ru").lang Русский
+
+                a(href='/')#logo #{$title}
+                div#logo_browser.logo_firefox
+                block head
+            div#content
+                h2 #{$content_title}
+                ul
+                    - list.forEach(function (record) { 
+                        li(class=record[0]) #{record[1]}
+                    - });
+        div#footer
+            div.content
+                a(href="#").feedback#feedback #{$footer_feedback}
+                p.copyright &copy; GuroProjects 2012
