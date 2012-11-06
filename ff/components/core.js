@@ -20,6 +20,8 @@ const VERSION = 1.0;
 
 const SETTINGS = Cu.import("chrome://share-ca/content/settings.json", {}).SETTINGS; 
 
+const LOG_LEVEL = 100;
+
 function shareCaCore () {
     this._loadLibs();
     this._enableLogging();
@@ -75,7 +77,7 @@ shareCaCore.prototype = {
         root.level = Log4Moz.Level["All"];
 
         this._logger = Log4Moz.repository.getLogger(SETTINGS.name);
-        this._logger.level = Log4Moz.Level["All"];
+        this._logger.level = LOG_LEVEL;
 
         let consoleAppender = new Log4Moz.ConsoleAppender(formatter);
         this._logger.addAppender(consoleAppender);
