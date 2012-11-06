@@ -9,11 +9,20 @@
     <em:type>2</em:type>
     <em:unpack>true</em:unpack>
     <em:version>1.0</em:version>
-    <em:description>You could simple share on facebook</em:description>
+    <em:description>You can post images to Facebook with one click</em:description>
+
     <em:creator>Guro Bokum</em:creator>
     <em:contributor>Guro Bokum</em:contributor>
     <em:iconURL>chrome://share-ca/skin/img/32x32.png</em:iconURL>
     <em:icon64URL>chrome://share-ca/skin/img/64x64.png</em:icon64URL>
+
+    <em:localized>
+        <Description>
+            <em:locale>ru-RU</em:locale>
+            <em:name>Share ça</em:name>
+            <em:description>Публикуйте изображения на Facebook'е в один клик</em:description>
+        </Description>
+    </em:localized>
     
     <em:targetApplication>
       <Description>

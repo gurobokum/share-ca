@@ -2,7 +2,7 @@ module.exports = {
     "$title" : "Share-&ccedil;a extension",
     "$browser" : "Firefox",
 
-    "$head_title_1" : "you can post images from ",
+    "$head_title_1" : "post images from ",
     "$head_title_2" : "to Facebook with one click",
     "$head_auth_fb" : "congratulations! You`ve been authorized to Facebook",
     "$head_download_button" : "Download",
