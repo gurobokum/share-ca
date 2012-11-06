@@ -1,6 +1,6 @@
 "use strict";
 
-const EXPORTED_SYMBOLS = ["shareCaButton"]
+const EXPORTED_SYMBOLS = ["shareCaButton"];
 
 const {
    classes : Cc,
@@ -14,6 +14,7 @@ const MIN_IMG_WIDTH = 100;
 const MIN_IMG_HEIGHT = 100;
 
 const kWindowMediator = Cc["@mozilla.org/appshell/window-mediator;1"].getService(Ci.nsIWindowMediator);
+const kBundleService = Cc["@mozilla.org/intl/stringbundle;1"].getService(Ci.nsIStringBundleService);
 
 const NS_HTML = "http://www.w3.org/1999/xhtml";
 
@@ -22,12 +23,15 @@ const BUTTON_ATTRIBUTE = "share-ca-button";
 const LOADING_STATUS = "@share-ca.com/loading";
 const FORM_ID = "@share-ca.com/form;1";
 
-let shareCaButton = {
+const FORM_BUNDLE = kBundleService.createBundle("chrome://share-ca/locale/form.properties");
+
+const shareCaButton = {
     'init' : function (aApp) {
         this._app = aApp;
         
         this._app.logger.debug(">shareCaButton Init");
         this._bindEvents();
+        shareCaForm.init(aApp);
     },
 
     //TODO:
@@ -78,11 +82,10 @@ let shareCaButton = {
                 if (aEvent.button === 0) {
                     this._app.shareImage(image, null, function () {
                         image[LOADING_STATUS] = null;
-                        if (image === target["image"])
-                            self._unsetLoadingStatus(target);
+                        self.checkLoadingStatus(image);
                     });
                     image[LOADING_STATUS] = true;
-                    this._setLoadingStatus(target);
+                    this.checkLoadingStatus(image);
                 };
                 break;
             case "contextmenu": {
@@ -95,46 +98,43 @@ let shareCaButton = {
                 if (image[LOADING_STATUS])
                     return;
 
-                this._app.logger.debug("right click") 
-                this._showForm(image);
+                shareCaForm.show(image);
                 break;    
-            }
-            case "submit": {
-                //TODO:
-                target = aEvent.originalTarget;
-                let image = target["image"];
-                /*
-                let text = target.querySelector("textarea").value;
-                let self = this;
-
-                this._app.shareImage(image, text, function () {
-                    image[LOADING_STATUS] = null;
-                    if (image === target["image"])
-                        self._unsetLoadingStatus(target);
-                });
-                image[LOADING_STATUS] = true;
-                this._setLoadingStatus(target);
-                */
-                break;
-            }
+            };
             default:
                 break;
         };
+    },
+
+    'checkLoadingStatus' : function (aElement) {
+        if (!aElement)
+            return;
+        let doc = aElement.ownerDocument;
+        let button = doc[BUTTON_ID];
+        if (!button)
+            return;
+        if (button["image"] !== aElement) {
+            this.checkLoadingStatus(button["image"]);
+            return;
+        };
+        if (aElement[LOADING_STATUS])
+            this._setLoadingStatus(button);
+        else 
+            this._unsetLoadingStatus(button);
     },
 
     "_show" : function (aElement) {
         let doc = aElement.ownerDocument;
         let button = doc[BUTTON_ID];
         if (!button) {
-            let self = this;
             button = this._create(doc);
         };
-        this._position(button, aElement);
-        if (aElement[LOADING_STATUS])
-            this._setLoadingStatus(button);
-        else 
-            this._unsetLoadingStatus(button);
-        button.style.setProperty("display", "block", "important");
+        let self = this;
+        doc.defaultView.setTimeout(function () {
+            self._position(button, aElement);
+            self.checkLoadingStatus(aElement);
+            button.style.setProperty("display", "block", "important");
+        }, 0);
     },
 
     "_hide" : function (aDoc) {
@@ -145,30 +145,11 @@ let shareCaButton = {
         button.style.setProperty("display", "none", "");
     },
 
-    "_showForm" : function (aElement) {
-        let doc = aElement.ownerDocument;
-        let button = doc[BUTTON_ID];
-        let form = doc[FORM_ID];
-
-        if (!form) {
-            let self = this;
-            form = this._createForm(doc);
-        };
-        this._positionForm(form, aElement);
-        form.style.setProperty("display", "block", "important");
-    },
-
-    "_hideForm" : function (aDoc) {
-        let form = aDoc[FORM_ID];
-        if (!form)
-            return;
-        form.style.setProperty("display", "none", "");
-    },
-
     "_position" : function (aButton, aElement) {
         let elementClientRect = aElement.getBoundingClientRect();
         let doc = aElement.ownerDocument;
 
+        this._app.logger.debug("aButton " + aButton.width + " : " + aButton.height);
         let left = parseInt(doc.documentElement.scrollLeft, 10) +
                    elementClientRect.left +
                    elementClientRect.width - 
@@ -187,25 +168,6 @@ let shareCaButton = {
         aButton["image"] = aElement;
     },
 
-    "_positionForm" : function (aForm, aElement) {
-        let buttonClientRect = aElement.ownerDocument[BUTTON_ID].getBoundingClientRect();
-        let formClientRect = aForm.getBoundingClientRect(); 
-        
-        let left = buttonClientRect.left - (formClientRect.width / 2);
-        let top = buttonClientRect.top - formClientRect.height;
-        if (left < 0)
-            left = 0;
-        if (top < 0)
-            top = 0;
-
-        aForm.style.setProperty("left", left+"px", "important");
-        aForm.style.setProperty("top", top+"px", "important");
-
-        this._app.logger.debug("\tbutton.js: elementForm left [" + left + "] top [" + top + "]");
-
-        aForm["image"] = aElement;
-    },
-
     "_create" : function (aDoc) {
         let img = new aDoc.defaultView.Image();
         img.src = this._app.settings.src;
@@ -220,27 +182,6 @@ let shareCaButton = {
         return img;
     },
 
-    "_createForm" : function (aDoc) {
-        var form = aDoc.createElement("form");
-        form.style.setProperty("position", "absolute", "important");
-        form.style.setProperty("z-index", "99999", "important");
-
-        var text = aDoc.createElement("textarea");
-        text.setAttribute("placeholder", "Write description");
-
-        var submit = aDoc.createElement("input");
-        submit.setAttribute("type", "submit");
-        submit.setAttribute("value", "Send");
-
-        form.appendChild(text);
-        form.appendChild(submit);
-        aDoc.body.appendChild(form);
-        aDoc[FORM_ID] = form;
-        form.addEventListener("submit", this, false);
-
-        return form;
-    },
-
     "_setLoadingStatus" : function (aButton) {
         aButton.style.setProperty("opacity", "0.4", "important");
     },
@@ -249,15 +190,129 @@ let shareCaButton = {
         aButton.style.setProperty("opacity", "1", "important");
     },
 
-    get app () {
-        return this._app;
-    },
-    
     "_bindEvents" : function () {
         this._app.addListener("mouseover", this); 
         this._app.addListener("mouseout", this); 
     },
 
-    _app : null
+    get app () {
+        return this._app;
+    },
 
+    _app : null
 };
+
+const shareCaForm = {
+    'init' : function (aApp) {
+        this._app = aApp;
+        
+        this._app.logger.debug(">shareCaForm Init");
+    },
+
+    'show' : function (aElement) {
+        let doc = aElement.ownerDocument;
+        let form = doc[FORM_ID];
+
+        if (!form) {
+            let self = this;
+            form = this._create(doc);
+        };
+        form.style.setProperty("display", "block", "important");
+        this._position(form, aElement);
+    },
+
+    "_hide" : function (aDoc) {
+        let form = aDoc[FORM_ID];
+        if (!form)
+            return;
+        form.style.setProperty("display", "none", "");
+    },
+
+    "_submit" : function (aDoc) {
+        let form = aDoc[FORM_ID];
+        let image = form["image"];
+        let textarea = form.querySelector("textarea");
+        let text = textarea.value;
+        textarea.value = "";
+
+        this._app.logger.debug("form " + form + " : " + image + " : " + text);
+        this._app.shareImage(image, text, function () {
+            image[LOADING_STATUS] = null;
+            shareCaButton.checkLoadingStatus(image);
+        });
+        image[LOADING_STATUS] = true;
+        shareCaButton.checkLoadingStatus(image);
+
+        this._hide(aDoc);
+    },
+
+    "_create" : function (aDoc) {
+        var form = aDoc.createElement("form");
+        form.style.setProperty("position", "absolute", "important");
+        form.style.setProperty("z-index", "99999", "important");
+        form.style.setProperty("padding", "7px", "important");
+        form.style.setProperty("box-shadow", "1px 1px 1px #000", "important");
+        form.style.setProperty("background",  "url(" + this._app.settings.bg + ")", "important");
+
+        var text = aDoc.createElement("textarea");
+        text.setAttribute("placeholder", FORM_BUNDLE.GetStringFromName("description"));
+        text.style.setProperty("width", "250px", "important");
+        text.style.setProperty("height", "100px","important");
+        text.style.setProperty("display", "block", "important");
+        text.style.setProperty("margin", "0px 0px 7px 0px", "important");
+        text.style.setProperty("font-size", "14px", "important");
+        text.style.setProperty("font-family", "Arial, sans-serif", "important");
+
+        var submit = aDoc.createElement("input");
+        submit.setAttribute("type", "button");
+        submit.setAttribute("value", FORM_BUNDLE.GetStringFromName("send"));
+
+        var cancel = aDoc.createElement("input");
+        cancel.setAttribute("type", "button");
+        cancel.setAttribute("value", FORM_BUNDLE.GetStringFromName("cancel"));
+
+        form.appendChild(text);
+        form.appendChild(cancel);
+        form.appendChild(submit);
+        aDoc.body.appendChild(form);
+        aDoc[FORM_ID] = form;
+        submit.addEventListener("click", this._submit.bind(this, aDoc), false);
+        cancel.addEventListener("click", this._hide.bind(this, aDoc), false);
+
+        return form;
+    },
+
+    "_position" : function (aForm, aElement) {
+        let doc = aElement.ownerDocument;
+        let buttonClientRect = doc[BUTTON_ID].getBoundingClientRect();
+        let formClientRect = aForm.getBoundingClientRect(); 
+        let docElementClientRect = doc.documentElement.getBoundingClientRect();
+        
+        let buttonLeft = buttonClientRect.left + doc.documentElement.scrollLeft;
+        let buttonTop = buttonClientRect.top + doc.documentElement.scrollTop;
+        let left = buttonLeft - (formClientRect.width / 2);
+        let top = buttonTop - formClientRect.height;
+
+        if (left > docElementClientRect.width)
+            left = docElementClientRect.width;
+
+        if (left > docElementClientRect.height)
+            left = docElementClientRect.height;
+
+        if (left < 0)
+            left = 0;
+        if (top < 0)
+            top = 0;
+
+        aForm.style.setProperty("left", left+"px", "important");
+        aForm.style.setProperty("top", top+"px", "important");
+
+        this._app.logger.debug("\tbutton.js: elemButton left [" + buttonLeft + "] top [" + buttonTop + "]");
+        this._app.logger.debug("\tbutton.js: elemForm width [" + formClientRect.width + "] height [" + formClientRect.height + "]");
+        this._app.logger.debug("\tbutton.js: elementForm left [" + left + "] top [" + top + "]");
+
+        aForm["image"] = aElement;
+    },
+
+    _app : null
+}

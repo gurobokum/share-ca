@@ -5,7 +5,7 @@
   <Description about="urn:mozilla:install-manifest">
 
     <em:id>app@share-ca.com</em:id>
-    <em:name>Share ca</em:name>
+    <em:name>Share ça</em:name>
     <em:type>2</em:type>
     <em:unpack>true</em:unpack>
     <em:version>1.0</em:version>

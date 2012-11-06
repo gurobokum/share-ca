@@ -3,6 +3,7 @@ const EXPORTED_SYMBOLS = ["SETTINGS"];
 const SETTINGS = {
     "name" : "share ca",
     "src" : "chrome://share-ca-accessible/content/img/32x32.png",
+    "bg" : "chrome://share-ca-accessible/content/img/bg.png",
 
     "path" : {
         "libs" : "chrome://share-ca/content/libs",

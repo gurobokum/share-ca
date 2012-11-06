@@ -60,8 +60,8 @@ var shareCaApp = {
         };
     },
 
-    'shareImage' : function (aImage, aCallback) {
-        this._FB.shareImage(aImage, aCallback);
+    'shareImage' : function (aImage, aText, aCallback) {
+        this._FB.shareImage(aImage, aText, aCallback);
     },
 
     get logger () {

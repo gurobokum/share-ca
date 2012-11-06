@@ -7,6 +7,8 @@ const {
 } = Components;
 
 const XMLHttpRequest = Cc["@mozilla.org/xmlextras/xmlhttprequest;1"].createInstance(Ci.nsIXMLHttpRequest);
+const kConverter = Cc["@mozilla.org/intl/scriptableunicodeconverter"].createInstance(Ci.nsIScriptableUnicodeConverter);
+kConverter.charset = "utf-8";
 //const APP = Cc["@share-it.org/jiojiajiu/app;1"].createInstance(Ci.nsIShareItApp);
 
 let utils = {
@@ -109,6 +111,7 @@ Ajax.prototype = {
         return url;
     },
 
+    //TODO:
     "_generateMultipartData" : function (data, boundary) {
         let parts = [];
         let CRLF = "\r\n";
@@ -119,10 +122,11 @@ Ajax.prototype = {
             if (key === "source") {
                 part += "name=" + key + "; ";
                 part += "filename='shareit-photo';" + CRLF + CRLF;
-            } else {
+                part += data[key] + CRLF;
+            } else if (key === "message") {
                 part += "name=" + key + CRLF + CRLF;
+                part += kConverter.ConvertFromUnicode(data[key]) + CRLF;
             };
-            part += data[key] + CRLF;
             parts.push(part);
         };
         

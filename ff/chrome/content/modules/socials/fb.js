@@ -28,7 +28,7 @@ var fbService = {
         this._token = this._app.prefs.get(PREF_TOKEN);
     },
 
-    'shareImage' : function (img, text, callback) {
+    'shareImage' : function (img, text, callback, d) {
         if (!this._token) {
             this._setToken(this.shareImage.bind(this, img, text, callback));
             return;
@@ -63,7 +63,7 @@ var fbService = {
             kFileReader.removeEventListener("load", onLoad);
             if (this.readyState === this.DONE) {
                 let postUrl = "https://graph.facebook.com/" + self._wallAlbumId + "/photos?access_token=" + self._token;
-                let message = self._getPostMessage(doc.location.href);
+                let message = text || self._getPostMessage(doc.location.href);
 
                 let ajax = self._app.utils.ajax({
                     "multipart" : true,
@@ -96,6 +96,7 @@ var fbService = {
             "&redirect_uri=" + this.APP_CHANNEL + 
             "&scope=user_photos,publish_stream,status_update,friends_status&response_type=token";
         this._app.logger.debug("_setToken " + authUrl);
+        this._token = null;
 
         let gBrowser =  kWindowMediator.getMostRecentWindow("navigator:browser").gBrowser;
         let tab = gBrowser.addTab(authUrl);
@@ -179,7 +180,7 @@ var fbService = {
 
     "_getPostMessage" : function (url) {
         //TODO;
-        return this._profileName + " posted image by Share-ca from\n" + url//\u00C7a";
+        return this._profileName + " posted image by Share-\u00E7a"; // from\n" + url
     },
 
     _onError: function (status, response, callback) {

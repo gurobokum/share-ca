@@ -11,11 +11,12 @@ const {
 
 const kPrefService = Cc["@mozilla.org/preferences-service;1"].getService(Ci.nsIPrefService);
 
-const PREF_BRANCH = "extensions.share-ca."
+const PREF_BRANCH = "extensions.share-ca.";
 
 var shareCaPrefs = {
     'init' : function (aApp) {
         this._app = aApp;
+        this._app.logger.debug(">shareCaPrefs Init");
         this._app.prefs = this;
     },
 
