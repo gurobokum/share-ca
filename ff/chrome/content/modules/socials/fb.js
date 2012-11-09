@@ -11,10 +11,13 @@ const {
 const kWindowMediator = Cc["@mozilla.org/appshell/window-mediator;1"].getService(Ci.nsIWindowMediator);
 const kWindowWatcher = Cc["@mozilla.org/embedcomp/window-watcher;1"].getService(Ci.nsIWindowWatcher);
 const kFileReader = Cc["@mozilla.org/files/filereader;1"].createInstance(Ci.nsIDOMFileReader);
+const kBundleService = Cc["@mozilla.org/intl/stringbundle;1"].getService(Ci.nsIStringBundleService);
+
 
 const NS_HTML = "http://www.w3.org/1999/xhtml";
 
 const PREF_TOKEN = "token.FB";
+const FB_BUNDLE = kBundleService.createBundle("chrome://share-ca/locale/fb.properties");
 
 var fbService = {
 
@@ -63,7 +66,7 @@ var fbService = {
             kFileReader.removeEventListener("load", onLoad);
             if (this.readyState === this.DONE) {
                 let postUrl = "https://graph.facebook.com/" + self._wallAlbumId + "/photos?access_token=" + self._token;
-                let message = text || self._getPostMessage(doc.location.href);
+                let message = self._getPostMessage(text, doc.location.href);
 
                 let ajax = self._app.utils.ajax({
                     "multipart" : true,
@@ -178,9 +181,12 @@ var fbService = {
         }).send();
     },
 
-    "_getPostMessage" : function (url) {
-        //TODO;
-        return this._profileName + " posted image by Share-\u00E7a"; // from\n" + url
+    "_getPostMessage" : function (text, url) {
+        if (text) {
+            return text + "\n" + url;
+        } else {
+            return this._profileName + FB_BUNDLE.formatStringFromName("posted", [url], 1);
+        };
     },
 
     _onError: function (status, response, callback) {
