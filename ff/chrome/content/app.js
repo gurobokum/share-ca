@@ -9,8 +9,6 @@ const {
    manager : Cm
 } = Components;
 
-const LOG_LEVEL = 10;
-
 var shareCaApp = {
     'init' : function (aService, aSettings) {
         this._service = aService;
