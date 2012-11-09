@@ -25,6 +25,10 @@ app.get("/", function (req, res) {
     res.render("pages/index");
 });
 
+app.post("/", function (req, res) {
+    res.redirect("/");
+})
+
 app.get("/auth-fb", function (req, res) {
     var model = new LocalizationModel(req, res);
     res.locals(model.locale);
